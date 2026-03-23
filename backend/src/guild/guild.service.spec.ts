@@ -45,9 +45,14 @@ describe('GuildService (settings integration)', () => {
 
   it('creates guild with normalized settings', async () => {
     prisma.guild.findUnique.mockResolvedValue(null);
-    prisma.guild.create.mockImplementation(({ data }) => Promise.resolve({ ...data, id: 'g1' }));
+    prisma.guild.create.mockImplementation(({ data }) =>
+      Promise.resolve({ ...data, id: 'g1' }),
+    );
 
-    const dto: any = { name: 'Test Guild', settings: { visibility: 'private' } };
+    const dto: any = {
+      name: 'Test Guild',
+      settings: { visibility: 'private' },
+    };
     const res = await service.createGuild(dto, 'owner1');
     expect(prisma.guild.findUnique).toHaveBeenCalled();
     expect(prisma.guild.create).toHaveBeenCalled();
@@ -57,15 +62,26 @@ describe('GuildService (settings integration)', () => {
 
   it('throws conflict when slug exists', async () => {
     prisma.guild.findUnique.mockResolvedValue({ id: 'existing' });
-    await expect(service.createGuild({ name: 'X', slug: 'existing' }, 'owner')).rejects.toThrow(ConflictException);
+    await expect(
+      service.createGuild({ name: 'X', slug: 'existing' }, 'owner'),
+    ).rejects.toThrow(ConflictException);
   });
 
   it('merges settings on update', async () => {
     const guildId = 'g-1';
-    prisma.guild.findUnique.mockResolvedValue({ id: guildId, settings: { visibility: 'public', requireApproval: false } });
-    prisma.guild.update.mockImplementation(({ where, data }) => Promise.resolve({ id: where.id, ...data }));
+    prisma.guild.findUnique.mockResolvedValue({
+      id: guildId,
+      settings: { visibility: 'public', requireApproval: false },
+    });
+    prisma.guild.update.mockImplementation(({ where, data }) =>
+      Promise.resolve({ id: where.id, ...data }),
+    );
 
-    const updated = await service.updateGuild(guildId, { settings: { requireApproval: true } } as any, 'owner1');
+    const updated = await service.updateGuild(
+      guildId,
+      { settings: { requireApproval: true } } as any,
+      'owner1',
+    );
     expect(updated.settings.requireApproval).toBe(true);
   });
 
@@ -78,9 +94,19 @@ describe('GuildService (settings integration)', () => {
 
     const calledWhere = prisma.guild.findMany.mock.calls[0][0].where;
     if (calledWhere.AND) {
-      expect(calledWhere.AND).toEqual(expect.arrayContaining([expect.objectContaining({ settings: { path: ['discoverable'], equals: true } })]));
+      expect(calledWhere.AND).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            settings: { path: ['discoverable'], equals: true },
+          }),
+        ]),
+      );
     } else {
-      expect(calledWhere).toEqual(expect.objectContaining({ settings: { path: ['discoverable'], equals: true } }));
+      expect(calledWhere).toEqual(
+        expect.objectContaining({
+          settings: { path: ['discoverable'], equals: true },
+        }),
+      );
     }
   });
 
@@ -98,7 +124,7 @@ describe('GuildService (settings integration)', () => {
     prisma.guild.findUnique.mockResolvedValue(guildData);
 
     const result = await service.getGuild('guild-1');
-    
+
     expect(prisma.guild.findUnique).toHaveBeenCalledWith({
       where: { id: 'guild-1' },
       include: {
@@ -133,7 +159,7 @@ describe('GuildService (settings integration)', () => {
     prisma.guild.findUnique.mockResolvedValue(guildData);
 
     const result = await service.getBySlug('test-guild');
-    
+
     expect(prisma.guild.findUnique).toHaveBeenCalledWith({
       where: { slug: 'test-guild' },
       include: {

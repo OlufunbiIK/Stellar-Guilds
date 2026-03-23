@@ -50,7 +50,11 @@ export class GuildController {
   @Patch(':id')
   @UseGuards(GuildRoleGuard)
   @GuildRoles('ADMIN', 'OWNER')
-  async update(@Param('id') id: string, @Body() dto: UpdateGuildDto, @Request() req: any) {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateGuildDto,
+    @Request() req: any,
+  ) {
     return this.guildService.updateGuild(id, dto, req.user.userId);
   }
 
@@ -66,7 +70,11 @@ export class GuildController {
   @Post(':id/invite')
   @UseGuards(GuildRoleGuard)
   @GuildRoles('MODERATOR', 'ADMIN', 'OWNER')
-  async invite(@Param('id') id: string, @Body() dto: InviteMemberDto, @Request() req: any) {
+  async invite(
+    @Param('id') id: string,
+    @Body() dto: InviteMemberDto,
+    @Request() req: any,
+  ) {
     return this.guildService.inviteMember(id, dto, req.user.userId);
   }
 
@@ -74,10 +82,24 @@ export class GuildController {
   @Post(':id/revoke')
   @UseGuards(GuildRoleGuard)
   @GuildRoles('MODERATOR', 'ADMIN', 'OWNER')
-  async revoke(@Param('id') id: string, @Body() body: any, @Request() req: any) {
+  async revoke(
+    @Param('id') id: string,
+    @Body() body: any,
+    @Request() req: any,
+  ) {
     // body may contain token or userId
-    if (body.token) return this.guildService.revokeInviteByToken(id, body.token, req.user.userId);
-    if (body.userId) return this.guildService.revokeInviteForUser(id, body.userId, req.user.userId);
+    if (body.token)
+      return this.guildService.revokeInviteByToken(
+        id,
+        body.token,
+        req.user.userId,
+      );
+    if (body.userId)
+      return this.guildService.revokeInviteForUser(
+        id,
+        body.userId,
+        req.user.userId,
+      );
     return { error: 'token or userId required' };
   }
 
@@ -85,21 +107,39 @@ export class GuildController {
   @Post(':id/resend-invite')
   @UseGuards(GuildRoleGuard)
   @GuildRoles('MODERATOR', 'ADMIN', 'OWNER')
-  async resendInvite(@Param('id') id: string, @Body() body: any, @Request() req: any) {
+  async resendInvite(
+    @Param('id') id: string,
+    @Body() body: any,
+    @Request() req: any,
+  ) {
     // body must contain userId
     const userId = body.userId;
     if (!userId) return { error: 'userId required' };
 
-    const membership = await this.guildService['prisma'].guildMembership.findUnique({ where: { userId_guildId: { userId, guildId: id } } });
+    const membership = await this.guildService[
+      'prisma'
+    ].guildMembership.findUnique({
+      where: { userId_guildId: { userId, guildId: id } },
+    });
     if (!membership) return { error: 'Invite not found' };
-    if (membership.status !== 'PENDING') return { error: 'Not a pending invite' };
+    if (membership.status !== 'PENDING')
+      return { error: 'Not a pending invite' };
 
     // resend the invite token by email
     const token = membership.invitationToken;
-    const user = await this.guildService['prisma'].user.findUnique({ where: { id: userId } });
-    const guild = await this.guildService['prisma'].guild.findUnique({ where: { id } });
+    const user = await this.guildService['prisma'].user.findUnique({
+      where: { id: userId },
+    });
+    const guild = await this.guildService['prisma'].guild.findUnique({
+      where: { id },
+    });
     if (user?.email && token) {
-      await (this.guildService as any).mailer.sendInviteEmail(user.email, guild?.name || 'a guild', token, undefined);
+      await (this.guildService as any).mailer.sendInviteEmail(
+        user.email,
+        guild?.name || 'a guild',
+        token,
+        undefined,
+      );
       return { success: true };
     }
     return { error: 'No email or token to resend' };
@@ -107,8 +147,17 @@ export class GuildController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':id/approve')
-  async approve(@Param('id') id: string, @Body() dto: ApproveInviteDto, @Request() req: any) {
-    if (dto.token) return this.guildService.approveInviteByToken(id, dto.token, req.user.userId);
+  async approve(
+    @Param('id') id: string,
+    @Body() dto: ApproveInviteDto,
+    @Request() req: any,
+  ) {
+    if (dto.token)
+      return this.guildService.approveInviteByToken(
+        id,
+        dto.token,
+        req.user.userId,
+      );
     // If no token provided, try to approve the pending invite for the requester
     return this.guildService.approveInviteForUser(id, req.user.userId);
   }
@@ -129,7 +178,12 @@ export class GuildController {
   @Post(':id/assign-role/:userId')
   @UseGuards(GuildRoleGuard)
   @GuildRoles('ADMIN', 'OWNER')
-  async assignRole(@Param('id') id: string, @Param('userId') userId: string, @Body() body: any, @Request() req: any) {
+  async assignRole(
+    @Param('id') id: string,
+    @Param('userId') userId: string,
+    @Body() body: any,
+    @Request() req: any,
+  ) {
     return this.guildService.assignRole(id, userId, body.role, req.user.userId);
   }
 }

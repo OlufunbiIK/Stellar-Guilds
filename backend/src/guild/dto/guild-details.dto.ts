@@ -11,13 +11,13 @@ export class GuildDetailsDto {
   settings?: any;
   memberCount!: number;
   isActive!: boolean;
-  
+
   // Counts
   _count?: {
     memberships?: number;
     bounties?: number;
   };
-  
+
   // Relations included in existing implementation
   memberships?: any[];
   owner?: any;
