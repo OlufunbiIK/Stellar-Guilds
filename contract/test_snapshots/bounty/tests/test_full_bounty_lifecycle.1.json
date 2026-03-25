@@ -1,6 +1,6 @@
 {
   "generators": {
-    "address": 5,
+    "address": 6,
     "nonce": 0
   },
   "auth": [
@@ -745,7 +745,7 @@
                               "symbol": "status"
                             },
                             "val": {
-                              "u32": 4
+                              "u32": 3
                             }
                           },
                           {
@@ -1240,6 +1240,30 @@
                         },
                         "val": {
                           "u64": 8
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "Admin"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "Initialized"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "bool": true
                         }
                       }
                     ]
@@ -1745,7 +1769,9 @@
                 "symbol": "initialize"
               }
             ],
-            "data": "void"
+            "data": {
+              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDR4"
+            }
           }
         }
       },
@@ -2379,7 +2405,7 @@
                     "symbol": "status"
                   },
                   "val": {
-                    "u32": 7
+                    "u32": 6
                   }
                 },
                 {
@@ -2823,7 +2849,7 @@
                     "symbol": "status"
                   },
                   "val": {
-                    "u32": 1
+                    "u32": 7
                   }
                 },
                 {
@@ -3470,7 +3496,7 @@
                     "symbol": "status"
                   },
                   "val": {
-                    "u32": 2
+                    "u32": 1
                   }
                 },
                 {
@@ -3796,7 +3822,7 @@
                     "symbol": "status"
                   },
                   "val": {
-                    "u32": 3
+                    "u32": 2
                   }
                 },
                 {
@@ -4124,7 +4150,7 @@
                     "symbol": "status"
                   },
                   "val": {
-                    "u32": 4
+                    "u32": 3
                   }
                 },
                 {

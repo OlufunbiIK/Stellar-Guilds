@@ -1,6 +1,6 @@
 {
   "generators": {
-    "address": 3,
+    "address": 4,
     "nonce": 0
   },
   "auth": [
@@ -515,7 +515,7 @@
                               "symbol": "status"
                             },
                             "val": {
-                              "u32": 7
+                              "u32": 6
                             }
                           },
                           {
@@ -630,7 +630,7 @@
                               "symbol": "status"
                             },
                             "val": {
-                              "u32": 7
+                              "u32": 6
                             }
                           },
                           {
@@ -745,7 +745,7 @@
                               "symbol": "status"
                             },
                             "val": {
-                              "u32": 7
+                              "u32": 6
                             }
                           },
                           {
@@ -1245,6 +1245,30 @@
                         "val": {
                           "u64": 4
                         }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "Admin"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "Initialized"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "bool": true
+                        }
                       }
                     ]
                   }
@@ -1530,7 +1554,9 @@
                 "symbol": "initialize"
               }
             ],
-            "data": "void"
+            "data": {
+              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAITA4"
+            }
           }
         }
       },
@@ -2503,7 +2529,7 @@
                         "symbol": "status"
                       },
                       "val": {
-                        "u32": 7
+                        "u32": 6
                       }
                     },
                     {
@@ -2613,7 +2639,7 @@
                         "symbol": "status"
                       },
                       "val": {
-                        "u32": 7
+                        "u32": 6
                       }
                     },
                     {
@@ -2723,7 +2749,7 @@
                         "symbol": "status"
                       },
                       "val": {
-                        "u32": 7
+                        "u32": 6
                       }
                     },
                     {

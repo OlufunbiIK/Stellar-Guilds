@@ -1,4 +1,4 @@
-/// Bounty Escrow Module
+﻿/// Bounty Escrow Module
 ///
 /// This module handles bounty creation, funding, claiming, and escrow management
 /// for the Stellar Guilds platform.
@@ -45,7 +45,7 @@ pub use types::{Bounty, BountyStatus};
 /// Create a new bounty
 ///
 /// # Events emitted
-/// - `(bounty, created)` → `BountyCreatedEvent`
+/// - `(bounty, created)` â†’ `BountyCreatedEvent`
 pub fn create_bounty(
     env: &Env,
     guild_id: u64,
@@ -121,8 +121,8 @@ pub fn create_bounty(
 /// Fund a bounty with tokens
 ///
 /// # Events emitted
-/// - `(bounty, funded)`  → `BountyFundedEvent`
-/// - `(bounty, expired)` → `BountyExpiredEvent`  (if bounty found to be expired)
+/// - `(bounty, funded)`  â†’ `BountyFundedEvent`
+/// - `(bounty, expired)` â†’ `BountyExpiredEvent`  (if bounty found to be expired)
 pub fn fund_bounty(env: &Env, bounty_id: u64, funder: Address, amount: i128) -> bool {
     funder.require_auth();
 
@@ -174,8 +174,8 @@ pub fn fund_bounty(env: &Env, bounty_id: u64, funder: Address, amount: i128) -> 
 /// Claim a bounty after approval
 ///
 /// # Events emitted
-/// - `(bounty, claimed)`  → `BountyClaimedEvent`
-/// - `(bounty, expired)`  → `BountyExpiredEvent`  (if found expired during claim)
+/// - `(bounty, claimed)`  â†’ `BountyClaimedEvent`
+/// - `(bounty, expired)`  â†’ `BountyExpiredEvent`  (if found expired during claim)
 pub fn claim_bounty(env: &Env, bounty_id: u64, claimer: Address) -> bool {
     claimer.require_auth();
 
@@ -216,7 +216,7 @@ pub fn claim_bounty(env: &Env, bounty_id: u64, claimer: Address) -> bool {
 /// Submit work for a claimed bounty
 ///
 /// # Events emitted
-/// - `(bounty, submitted)` → `WorkSubmittedEvent`
+/// - `(bounty, submitted)` â†’ `WorkSubmittedEvent`
 pub fn submit_work(env: &Env, bounty_id: u64, submission_url: String) -> bool {
     let mut bounty = get_bounty(env, bounty_id).expect("Bounty not found");
 
@@ -315,7 +315,7 @@ pub fn approve_completion(env: &Env, bounty_id: u64, approver: Address) -> bool 
 /// Release escrow funds to the bounty claimer
 ///
 /// # Events emitted
-/// - `(bounty, released)` → `EscrowReleasedEvent`
+/// - `(bounty, released)` â†’ `EscrowReleasedEvent`
 pub fn release_escrow(env: &Env, bounty_id: u64) -> bool {
     if dispute_storage::is_reference_locked(env, &DisputeReference::Bounty, bounty_id) {
         panic!("Bounty is in active dispute");
@@ -354,7 +354,7 @@ pub fn release_escrow(env: &Env, bounty_id: u64) -> bool {
 /// Cancel a bounty and refund escrowed funds to the creator
 ///
 /// # Events emitted
-/// - `(bounty, cancelled)` → `BountyCancelledEvent`
+/// - `(bounty, cancelled)` â†’ `BountyCancelledEvent`
 pub fn cancel_bounty(env: &Env, bounty_id: u64, canceller: Address) -> bool {
     canceller.require_auth();
 
@@ -407,7 +407,7 @@ pub fn cancel_bounty(env: &Env, bounty_id: u64, canceller: Address) -> bool {
 /// Expire a bounty and refund escrowed funds if past its expiry timestamp
 ///
 /// # Events emitted
-/// - `(bounty, expired)` → `BountyExpiredEvent`
+/// - `(bounty, expired)` â†’ `BountyExpiredEvent`
 pub fn expire_bounty(env: &Env, bounty_id: u64) -> bool {
     if dispute_storage::is_reference_locked(env, &DisputeReference::Bounty, bounty_id) {
         panic!("Bounty is in active dispute");
@@ -440,7 +440,7 @@ pub fn expire_bounty(env: &Env, bounty_id: u64) -> bool {
     true
 }
 
-// ─── Query helpers ────────────────────────────────────────────────────────────
+// â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 pub fn get_bounty_data(env: &Env, bounty_id: u64) -> Bounty {
     get_bounty(env, bounty_id).expect("Bounty not found")

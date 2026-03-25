@@ -1,6 +1,6 @@
 {
   "generators": {
-    "address": 6,
+    "address": 7,
     "nonce": 0
   },
   "auth": [
@@ -682,7 +682,7 @@
                               "symbol": "status"
                             },
                             "val": {
-                              "u32": 3
+                              "u32": 2
                             }
                           },
                           {
@@ -1178,6 +1178,30 @@
                         "val": {
                           "u64": 6
                         }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "Admin"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
+                        }
+                      },
+                      {
+                        "key": {
+                          "vec": [
+                            {
+                              "symbol": "Initialized"
+                            }
+                          ]
+                        },
+                        "val": {
+                          "bool": true
+                        }
                       }
                     ]
                   }
@@ -1609,7 +1633,9 @@
                 "symbol": "initialize"
               }
             ],
-            "data": "void"
+            "data": {
+              "address": "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOLZM"
+            }
           }
         }
       },
@@ -2954,7 +2980,7 @@
             "data": {
               "vec": [
                 {
-                  "string": "caught panic 'Unauthorized: Approver must be a guild admin or owner' from contract function 'Symbol(obj#761)'"
+                  "string": "caught panic 'Unauthorized: Approver must be a guild admin or owner' from contract function 'Symbol(obj#821)'"
                 },
                 {
                   "u64": 1
