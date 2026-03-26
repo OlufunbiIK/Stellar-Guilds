@@ -1,4 +1,4 @@
-﻿use soroban_sdk::{contracttype, Address};
+use soroban_sdk::{contracttype, Address};
 
 /// Represents the current version of the contract
 #[contracttype]
@@ -11,7 +11,11 @@ pub struct Version {
 
 impl Version {
     pub fn new(major: u32, minor: u32, patch: u32) -> Self {
-        Version { major, minor, patch }
+        Version {
+            major,
+            minor,
+            patch,
+        }
     }
 
     /// Compare two versions for compatibility

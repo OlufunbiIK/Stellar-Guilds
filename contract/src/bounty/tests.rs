@@ -1501,8 +1501,8 @@ fn test_approve_bounty_not_funded_fails() {
 
 #[test]
 fn test_bounty_serialization() {
-    use soroban_sdk::{IntoVal, TryFromVal, Val};
     use crate::bounty::types::Bounty;
+    use soroban_sdk::{IntoVal, TryFromVal, Val};
 
     let env = Env::default();
     let bounty = Bounty {
@@ -1520,10 +1520,10 @@ fn test_bounty_serialization() {
         created_at: 1000,
         expires_at: 2000,
     };
-    
+
     let val: Val = bounty.clone().into_val(&env);
     let deserialized: Bounty = Bounty::try_from_val(&env, &val).unwrap();
-    
+
     assert_eq!(bounty.id, deserialized.id);
     assert_eq!(bounty.status, deserialized.status);
     assert_eq!(bounty.reward_amount, deserialized.reward_amount);
@@ -1531,8 +1531,8 @@ fn test_bounty_serialization() {
 
 #[test]
 fn test_escrow_state_serialization() {
-    use soroban_sdk::{IntoVal, TryFromVal, Val};
     use crate::bounty::types::EscrowLockedState;
+    use soroban_sdk::{IntoVal, TryFromVal, Val};
 
     let env = Env::default();
     let state = EscrowLockedState {
@@ -1541,9 +1541,9 @@ fn test_escrow_state_serialization() {
         token: Address::generate(&env),
         is_locked: true,
     };
-    
+
     let val: Val = state.clone().into_val(&env);
     let deserialized: EscrowLockedState = EscrowLockedState::try_from_val(&env, &val).unwrap();
-    
+
     assert_eq!(state, deserialized);
 }

@@ -1,11 +1,11 @@
-﻿#![no_std]
+#![no_std]
 
 use soroban_sdk::{contract, contractimpl, Address, Env, String, Vec};
 
 mod events;
 mod guild;
 use guild::membership::{
-    add_member, create_guild, get_all_members, get_member, has_permission, is_member,
+    add_member, create_guild, get_all_members, get_member, has_permission, is_member, join_guild,
     remove_member, update_role,
 };
 use guild::storage;
@@ -13,9 +13,8 @@ use guild::types::{Member, Role};
 
 mod bounty;
 use bounty::{
-    approve_bounty, approve_completion, cancel_bounty, claim_bounty, create_bounty,
-    expire_bounty, fund_bounty, get_bounty_data, get_guild_bounties_list, release_escrow,
-    submit_work, Bounty,
+    approve_bounty, approve_completion, cancel_bounty, claim_bounty, create_bounty, expire_bounty,
+    fund_bounty, get_bounty_data, get_guild_bounties_list, release_escrow, submit_work, Bounty,
 };
 
 mod treasury;
@@ -316,6 +315,24 @@ impl StellarGuildsContract {
     /// true if the address is a member, false otherwise
     pub fn is_member(env: Env, guild_id: u64, address: Address) -> bool {
         is_member(&env, guild_id, address)
+    }
+
+    /// Join an existing guild as a member
+    ///
+    /// The caller must sign the transaction. They will be added with
+    /// `Role::Member` if not already present.
+    ///
+    /// # Arguments
+    /// * `guild_id` - The ID of the guild to join
+    /// * `caller`   - The address joining (must auth)
+    ///
+    /// # Returns
+    /// true if successful, panics otherwise
+    pub fn join_guild(env: Env, guild_id: u64, caller: Address) -> bool {
+        match join_guild(&env, guild_id, caller) {
+            Ok(result) => result,
+            Err(e) => panic!("{:?}", e),
+        }
     }
 
     /// Check if a member has permission for a required role
@@ -2074,7 +2091,11 @@ impl StellarGuildsContract {
         initial_version_patch: u32,
         governance_address: Address,
     ) -> bool {
-        let version = Version::new(initial_version_major, initial_version_minor, initial_version_patch);
+        let version = Version::new(
+            initial_version_major,
+            initial_version_minor,
+            initial_version_patch,
+        );
         upgrade_storage::initialize(&env, version, governance_address);
         true
     }
@@ -2089,8 +2110,18 @@ impl StellarGuildsContract {
         target_version_patch: u32,
         description: String,
     ) -> u64 {
-        let target_version = Version::new(target_version_major, target_version_minor, target_version_patch);
-        upgrade_logic::propose_upgrade(&env, &proposer, &new_contract_address, &target_version, description)
+        let target_version = Version::new(
+            target_version_major,
+            target_version_minor,
+            target_version_patch,
+        );
+        upgrade_logic::propose_upgrade(
+            &env,
+            &proposer,
+            &new_contract_address,
+            &target_version,
+            description,
+        )
     }
 
     /// Vote on an upgrade proposal
@@ -2107,11 +2138,7 @@ impl StellarGuildsContract {
     }
 
     /// Execute an approved upgrade
-    pub fn execute_upgrade_proposal(
-        env: Env,
-        executor: Address,
-        proposal_id: u64,
-    ) -> bool {
+    pub fn execute_upgrade_proposal(env: Env, executor: Address, proposal_id: u64) -> bool {
         match upgrade_logic::execute_upgrade(&env, &executor, proposal_id) {
             Ok(_) => true,
             Err(_) => false,
@@ -2135,11 +2162,7 @@ impl StellarGuildsContract {
     }
 
     /// Toggle emergency upgrades on/off
-    pub fn toggle_emergency_upgrades(
-        env: Env,
-        caller: Address,
-        enable: bool,
-    ) -> bool {
+    pub fn toggle_emergency_upgrades(env: Env, caller: Address, enable: bool) -> bool {
         match upgrade_logic::toggle_emergency_upgrades(&env, &caller, enable) {
             Ok(_) => true,
             Err(_) => false,
@@ -2182,21 +2205,13 @@ impl StellarGuildsContract {
     // ============ Proxy Functions ============
 
     /// Initialize proxy functionality
-    pub fn initialize_proxy(
-        env: Env,
-        initial_implementation: Address,
-        admin: Address,
-    ) -> bool {
+    pub fn initialize_proxy(env: Env, initial_implementation: Address, admin: Address) -> bool {
         proxy_storage::initialize(&env, initial_implementation, admin);
         true
     }
 
     /// Upgrade the proxy to a new implementation
-    pub fn proxy_upgrade(
-        env: Env,
-        caller: Address,
-        new_implementation: Address,
-    ) -> bool {
+    pub fn proxy_upgrade(env: Env, caller: Address, new_implementation: Address) -> bool {
         match proxy_impl::upgrade(&env, &caller, &new_implementation) {
             Ok(_) => true,
             Err(_) => false,
@@ -2204,11 +2219,7 @@ impl StellarGuildsContract {
     }
 
     /// Transfer admin rights of the proxy
-    pub fn proxy_transfer_admin(
-        env: Env,
-        caller: Address,
-        new_admin: Address,
-    ) -> bool {
+    pub fn proxy_transfer_admin(env: Env, caller: Address, new_admin: Address) -> bool {
         match proxy_impl::transfer_admin(&env, &caller, &new_admin) {
             Ok(_) => true,
             Err(_) => false,
@@ -2226,10 +2237,7 @@ impl StellarGuildsContract {
     }
 
     /// Trigger emergency stop for the proxy
-    pub fn proxy_emergency_stop(
-        env: Env,
-        caller: Address,
-    ) -> bool {
+    pub fn proxy_emergency_stop(env: Env, caller: Address) -> bool {
         match proxy_impl::emergency_stop(&env, &caller) {
             Ok(_) => true,
             Err(_) => false,
@@ -2237,10 +2245,7 @@ impl StellarGuildsContract {
     }
 
     /// Resume proxy after emergency stop
-    pub fn proxy_resume(
-        env: Env,
-        caller: Address,
-    ) -> bool {
+    pub fn proxy_resume(env: Env, caller: Address) -> bool {
         match proxy_impl::resume(&env, &caller) {
             Ok(_) => true,
             Err(_) => false,
