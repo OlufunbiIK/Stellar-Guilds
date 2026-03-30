@@ -59,6 +59,13 @@ const config: Config = {
         height: "height",
         spacing: "margin, padding",
       },
+      keyframes: {
+        shimmer: {
+          "100%": {
+            transform: "translateX(100%)",
+          },
+        },
+      },
     },
   },
   plugins: [typography],

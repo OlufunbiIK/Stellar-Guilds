@@ -1,40 +1,52 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import Link from 'next/link'
-import { Search, Plus, Filter } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useGuildStore } from '@/store/guildStore'
-import { GuildCard } from '@/features/guilds/components/GuildCard'
-import { Button } from '@/components/ui/Button'
-import { EmptyState } from '@/components/ui/EmptyState'
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { Search, Plus, Filter } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useGuildStore } from "@/store/guildStore";
+import { GuildCard } from "@/features/guilds/components/GuildCard";
+import { Button } from "@/components/ui/Button";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 export default function GuildsPage() {
-  const router = useRouter()
-  const { guilds, fetchGuilds } = useGuildStore()
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string>('')
-  const [selectedTier, setSelectedTier] = useState<string>('')
+  const router = useRouter();
+  const { guilds, fetchGuilds } = useGuildStore();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedTier, setSelectedTier] = useState<string>("");
 
   useEffect(() => {
-    fetchGuilds()
-  }, [fetchGuilds])
+    fetchGuilds();
+  }, [fetchGuilds]);
 
-  const categories = ['All', 'Development', 'DeFi', 'Education', 'Gaming', 'NFT', 'DAO', 'Social']
-  const tiers = ['All', 'bronze', 'silver', 'gold', 'platinum']
+  const categories = [
+    "All",
+    "Development",
+    "DeFi",
+    "Education",
+    "Gaming",
+    "NFT",
+    "DAO",
+    "Social",
+  ];
+  const tiers = ["All", "bronze", "silver", "gold", "platinum"];
 
   const filteredGuilds = guilds.filter((guild) => {
     const matchesSearch =
       guild.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      guild.description.toLowerCase().includes(searchQuery.toLowerCase())
+      guild.description.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesCategory =
-      !selectedCategory || selectedCategory === 'All' || guild.category === selectedCategory
+      !selectedCategory ||
+      selectedCategory === "All" ||
+      guild.category === selectedCategory;
 
-    const matchesTier = !selectedTier || selectedTier === 'All' || guild.tier === selectedTier
+    const matchesTier =
+      !selectedTier || selectedTier === "All" || guild.tier === selectedTier;
 
-    return matchesSearch && matchesCategory && matchesTier
-  })
+    return matchesSearch && matchesCategory && matchesTier;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -81,7 +93,7 @@ export default function GuildsPage() {
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white"
               >
                 {categories.map((cat) => (
-                  <option key={cat} value={cat === 'All' ? '' : cat}>
+                  <option key={cat} value={cat === "All" ? "" : cat}>
                     {cat}
                   </option>
                 ))}
@@ -96,7 +108,7 @@ export default function GuildsPage() {
                 className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white capitalize"
               >
                 {tiers.map((tier) => (
-                  <option key={tier} value={tier === 'All' ? '' : tier}>
+                  <option key={tier} value={tier === "All" ? "" : tier}>
                     {tier}
                   </option>
                 ))}
@@ -124,12 +136,12 @@ export default function GuildsPage() {
             title="No guilds found"
             description="Try adjusting your search or filters, or create a new guild."
             createLabel="Create Guild"
-            onCreate={() => router.push('/guilds/create')}
+            onCreate={() => router.push("/guilds/create")}
             illustration={<Filter className="h-14 w-14 text-gray-400" />}
             className="border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
           />
         )}
       </div>
     </div>
-  )
+  );
 }
