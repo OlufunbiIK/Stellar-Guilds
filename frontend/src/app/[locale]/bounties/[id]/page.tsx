@@ -56,7 +56,7 @@ export default function BountyDetailPage({ params }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#050505] text-white">
+    <div className="min-h-screen w-full bg-slate-950 text-white">
       <Toaster theme="dark" position="bottom-right" richColors />
 
       <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-violet-500/5 blur-[120px] rounded-full pointer-events-none" />
@@ -98,7 +98,7 @@ export default function BountyDetailPage({ params }: PageProps) {
                 {bounty.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-slate-800/10 text-xs font-medium text-slate-300"
                   >
                     <Code2 size={12} className="text-violet-500" />
                     {tag}
@@ -143,7 +143,7 @@ export default function BountyDetailPage({ params }: PageProps) {
           </div>
 
           <div className="lg:col-span-4 space-y-6">
-            <div className="bg-[#0A0A0A] border border-white/10 rounded-[32px] p-8   overflow-hidden">
+            <div className="bg-slate-900 border border-slate-800/10 rounded-[32px] p-8   overflow-hidden">
               <div className="absolute -top-24 -right-24 w-48 h-48 bg-violet-500/10 blur-[60px] rounded-full" />
 
               <div className="relative z-10">
@@ -201,7 +201,7 @@ export default function BountyDetailPage({ params }: PageProps) {
                   )}
 
                   {viewState === "completed" && (
-                    <div className="w-full bg-white/5 border border-white/10 text-violet-500 py-5 rounded-2xl font-black uppercase tracking-widest text-center flex items-center justify-center gap-2">
+                    <div className="w-full bg-white/5 border border-slate-800/10 text-violet-500 py-5 rounded-2xl font-black uppercase tracking-widest text-center flex items-center justify-center gap-2">
                       <CheckCircle2 size={18} />
                       Submitted
                     </div>
@@ -210,13 +210,13 @@ export default function BountyDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-[32px] p-6 space-y-6">
+            <div className="bg-white/5 border border-slate-800/10 rounded-[32px] p-6 space-y-6">
               <div className="flex items-center gap-4">
                 <Image
                   src={bounty.guildLogo}
                   width={48}
                   height={48}
-                  className="w-12 h-12 rounded-2xl bg-black p-1 border border-white/10"
+                  className="w-12 h-12 rounded-2xl bg-black p-1 border border-slate-800/10"
                   alt={bounty.guildName}
                 />
                 <div>
@@ -246,7 +246,7 @@ const BentoStat = ({
   label: string;
   value: string;
 }) => (
-  <div className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/[0.08] transition-colors">
+  <div className="bg-white/5 border border-slate-800/10 rounded-2xl p-4 hover:bg-white/[0.08] transition-colors">
     <div className="text-violet-500 mb-2">{icon}</div>
     <p className="text-[9px] uppercase font-black text-slate-500 tracking-tighter mb-1">
       {label}

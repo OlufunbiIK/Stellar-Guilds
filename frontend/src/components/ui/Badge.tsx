@@ -10,8 +10,8 @@ const variantColorMap: Record<BadgeVariant, string> = {
     "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
   completed:
     "bg-stellar-slate text-stellar-white dark:bg-stellar-navy dark:text-stellar-white",
-  expired: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400",
-  draft: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-400",
+  expired: "bg-slate-800/50 text-gray-800 dark:bg-gray-800 dark:text-gray-400",
+  draft: "bg-slate-800/50 text-gray-800 dark:bg-gray-800 dark:text-gray-400",
   active: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
   passed:
     "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
